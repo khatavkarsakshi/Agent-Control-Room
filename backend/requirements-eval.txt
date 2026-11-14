@@ -1,0 +1,17 @@
+# Optional evaluation dependencies (Phase 4).
+#
+# The control plane runs without these: the deterministic `custom` evaluator is
+# always available. Install this file only when you want the judge-model backed
+# Ragas/DeepEval families:
+#
+#     pip install -r backend/requirements-eval.txt
+#
+# Both packages pull substantial transitive dependencies, and their metrics call
+# an LLM judge (tokens are billed). Configure the judge with the provider keys in
+# `.env`; DeepEval additionally honours EVALUATION_JUDGE_MODEL.
+#
+# Versions are intentionally lower-bounded: the adapters detect the installed
+# metric classes at runtime and degrade gracefully if a version lacks one.
+
+ragas>=0.2,<0.4
+deepeval>=2.0,<4.0

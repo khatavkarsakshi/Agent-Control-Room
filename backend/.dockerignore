@@ -1,0 +1,18 @@
+# Virtual environments and local caches never belong in the image.
+venv/
+ven/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+*.txt
+!requirements.txt
+!requirements-dev.txt
+!requirements-eval.txt
+.env
+.env.*

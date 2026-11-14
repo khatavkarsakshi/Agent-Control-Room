@@ -1,0 +1,43 @@
+# Development overrides: bind mounts + hot reload.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+services:
+  backend:
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "true"
+      LOG_JSON: "false"
+    volumes:
+      - ./backend:/code
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --proxy-headers"
+
+  celery-worker:
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "true"
+      LOG_JSON: "false"
+    volumes:
+      - ./backend:/code
+
+  celery-beat:
+    environment:
+      ENVIRONMENT: development
+      DEBUG: "true"
+      LOG_JSON: "false"
+    volumes:
+      - ./backend:/code
+
+  frontend:
+    # Uses the `dev` stage of frontend/Dockerfile (full node_modules + next dev).
+    build:
+      target: dev
+    environment:
+      API_BASE_URL: http://backend:8000
+      WATCHPACK_POLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
